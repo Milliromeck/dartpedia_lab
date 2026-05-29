@@ -2,6 +2,16 @@ import 'dart:io';
 
 const String ansiEscapeLiteral = '\x1B';
 
+Future<void> write(String text, {int duration = 50}) async {
+  final List<String> lines = text.split('\n');
+  for (final String l in lines) {
+    await Future<void>.delayed(
+      Duration(milliseconds: duration),
+      () => stdout.write('$l \n'),
+    );
+  }
+}
+
 enum ConsoleColor {
   lightBlue(184, 234, 254),
   red(242, 93, 80),
@@ -13,7 +23,6 @@ enum ConsoleColor {
   final int r, g, b;
 
   String get enableForeground => '$ansiEscapeLiteral[38;2;$r;$g;${b}m';
-  String get enableBackground => '$ansiEscapeLiteral[48;2;$r;$g;${b}m';
   static String get reset => '$ansiEscapeLiteral[0m';
 
   String applyForeground(String text) =>
