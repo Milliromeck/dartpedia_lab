@@ -7,13 +7,13 @@ void main(List<String> arguments) {
   final errorLogger = initFileLogger('errors');
   
   final runner = CommandRunner(
-    onError: (Object error) {
+    onError: (Object error) async {
       if (error is Exception) {
         errorLogger.severe(error.toString());
-        print(error);
+        await write('\n${error.toString().errorText}');
       } else if (error is Error) {
         errorLogger.severe('${error.toString()}\n${error.stackTrace}');
-        print(error);
+        await write('\n${error.toString().errorText}');
       }
     },
   )
